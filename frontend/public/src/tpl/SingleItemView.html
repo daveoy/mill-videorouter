@@ -1,0 +1,113 @@
+<% console.log(data);%>
+
+<div class="single_item_view">
+	<div class="button">
+		
+		<% if(data.type == 'from'){ %>
+			
+			<div class="machine_type group">
+				<% if(data.level[0]){ %>
+					<%= data.level[0] %>
+				<% } %>
+			</div>
+
+			<div class="sublevel">
+				<% if(data.level[1]){%>
+					<%= data.label %>
+				<% } %>		
+			</div>
+			
+			<% var label = (data.short_label) ?  data.short_label : data.level[1]; %>
+
+			<% var label_class = (!isNaN(parseFloat(label)) && isFinite(label)) ? 'number' : 'string'; %>
+
+			<div class="short_label <%= label_class %>">
+				<%= data_modified.text %>	 
+			</div>
+
+			<div class="_currently_connected currently_connected">
+				
+			</div>
+		<% } %>
+
+
+
+		<% if(data.type == 'to'){ %>
+
+			<div class="floor_title">
+				<span class="floor">
+					<%= data.title %>
+				</span>
+
+				<span class="number_text">
+					<%= data.short_name_en %>
+				</span>
+			</div>
+			
+			<% if(data.level.length == 1){ %>
+
+				<% var label = (data.level[1]) ? data.level[1] : data.label; %>
+
+				<% var label_class = (!isNaN(parseFloat(label)) && isFinite(label)) ? 'number' : 'string'; %>
+
+				<div class="short_label <%= label_class %> margin_top">	
+					<%= data_modified.text %>	 
+				</div>
+
+			<% }else{ %>
+
+				<div class="sublevel">
+					<% if(data.level[1]){%>
+						<%= data.label %>
+					<% } %>
+				</div>
+				
+				<% var label = (data.level[1]) ? data.level[1] : data.label; %>
+
+				<% var label_class = (!isNaN(parseFloat(label)) && isFinite(label)) ? 'number' : 'string'; %>
+
+				<div class="short_label <%= label_class %> margin_top">	
+					<%= data_modified.text %>	 
+
+				</div>
+
+
+			<% } %> 
+			
+
+			<div class="_currently_connected currently_connected">
+				<% 	
+				 	
+				 	if(data.source_data){
+
+						var source_text = '';
+
+	 					_.each(data.source_data.level, function(_str, _i){
+							if(_i != data.source_data.level.length - 1){
+								source_text += _str + ' ';
+							}else{
+								source_text += _str;
+							}
+							
+						});
+						source_text += ' - ' + data.source_data.label;
+				 	}
+
+				%>
+
+				<% if(data.source_data){ %>
+				 
+					Currently connected to <%= source_text %>
+				 
+				<% } %>
+			</div>
+ 
+		<% } %>
+
+
+
+		
+
+
+	</div>	
+</div>

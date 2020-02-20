@@ -1,0 +1,49 @@
+.breadcrumbs_view {
+ 			background-color: $lightGrey;
+ 			color: $mediumGrey;
+ 			font-size: 16px;
+ 			padding: 15px 0;
+ 			float: left;
+ 			width: 100%;
+ 			cursor: pointer;
+
+ 			.home_btn {
+ 				float: left;
+ 				font-family: $mill_router;
+ 				font-size: 34px;
+ 				font-weight: 400;
+ 				margin-right: 10px;
+
+ 				.no-touch &:hover, &.active {
+					color: $millOrange;
+				}
+ 			}
+
+ 			.path_ctr {
+ 				float: left;
+
+ 				.crumb {
+	 				float: left;
+
+	 				&.active {
+	 					color: $millOrange;
+	 				}
+
+	 				&:hover {
+	 					color: $millOrange;
+						text-decoration: underline;
+					}
+
+					&:before {
+						content: "/";
+						padding: 0 8px;
+					}
+
+					&:first-child {
+						&:before {
+							display: none;
+						}
+					}
+	 			}
+ 			}
+ 		}

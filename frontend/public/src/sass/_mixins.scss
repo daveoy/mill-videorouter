@@ -1,0 +1,56 @@
+// Generic method for prefixed styles
+@mixin prefixed-style($prop, $val, $requiredPrefixes: $DEFAULT_PREFIX_LIST){
+  $pList: $requiredPrefixes;
+
+  @if $requiredPrefixes == 'all' {
+    $pList: $FULL_PREFIX_LIST;
+  }
+  
+  @each $prefix in $pList {
+    #{$prefix}#{$prop}: $val;
+  }
+}
+
+@mixin transparency($transparency:0.60) {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=$transparency)"; /* IE 8 */
+  filter: alpha(opacity=$transparency); /* IE 5-7 */
+  -moz-opacity: $transparency; /* Netscape */
+  -khtml-opacity: $transparency; /* Safari 1.x */
+  opacity: $transparency; /* Good browsers */
+}
+
+@mixin display_flex {
+  display: -ms-flexbox;
+  -ms-box-orient: horizontal;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: flex;
+}
+
+@mixin flex_direction {
+  -webkit-flex-flow: column;
+  -moz-flex-flow: column;
+  -ms-flex-flow: column;
+  flex-flow: column;
+}
+
+@mixin justify_content($v:space-between) {
+  @include prefixed-style(justify-content, $v, '-webkit-' '-moz-' '-ms-' '');
+ 
+}
+
+@mixin align_items ($v:center) {
+  @include prefixed-style(align-items, $v, '-webkit-' '-moz-' '-ms-' '');
+}
+
+@mixin border-radius($val){
+  @include prefixed-style(border-radius, $val, '-webkit-' '-moz-' '');
+}
+
+@mixin transition ($type:all, $duration:0.5, $ease:ease-out) {
+  -webkit-transition: $type #{$duration}s $ease;  /* Chrome 1-25, Safari 3.2+ */
+  -moz-transition: $type #{$duration}s $ease;  /* Firefox 4-15 */
+  -o-transition: $type #{$duration}s $ease;  /* Opera 10.50–12.00 */
+  transition: $type #{$duration}s $ease;  /* Chrome 26, Firefox 16+, IE 10+, Opera 12.10+ */
+}

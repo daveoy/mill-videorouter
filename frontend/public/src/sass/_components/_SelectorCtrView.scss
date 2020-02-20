@@ -1,0 +1,42 @@
+.selector_ctr_view {
+	@include display_flex;
+	@include flex_direction;
+ 	min-height: 596px;
+ 	width: 100%;
+ 	background-color: $arcticBlue;
+
+ 	.message_ctr {
+		padding:16px 16px 0;
+		color:$white;
+		text-transform: uppercase;
+		font-weight: 300;
+		letter-spacing: 1;
+		line-height: 14px;
+		cursor: default;
+		float: left;
+ 	}
+
+ 	.pane_ctr {
+		float: left;
+		padding: 34px;
+		min-height: 532px;
+		background-color: $arcticBlue;
+		width: 100%;
+	}
+
+	&.black {
+		background-color: $bodyBlack;
+
+		.pane_ctr {
+			background-color: $bodyBlack;
+		}
+
+		.message_ctr {
+			display: none;
+	 	}
+	}
+
+	.orange {
+		text-decoration: none;
+	}
+}

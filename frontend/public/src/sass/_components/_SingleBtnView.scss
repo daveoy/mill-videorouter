@@ -1,0 +1,177 @@
+.single_btn_view {
+	background: $lightArcticBlue;
+	color: $white;
+	float: left;
+	cursor: pointer;
+	text-align: center;
+	@include transition;
+	 display: block;
+	 position: relative; 
+
+  	.button {
+  		position: relative;
+		top: 50%;
+		-webkit-transform: translateY(-50%);
+		-ms-transform: translateY(-50%);
+		transform: translateY(-50%);
+  	}
+
+  	&.locked {
+		cursor: auto;
+		
+		&:before  {
+			content: "q";
+			font-family: $mill_router !important;
+			color: #c0c8ce;
+			font-size: 50px;
+			line-height: 85px;
+			text-align: center;
+			position: absolute;
+			top: 50%;
+			-webkit-transform: translateY(-50%);
+			-ms-transform: translateY(-50%);
+			transform: translateY(-50%);
+			left: 0;
+			z-index: 100;
+			width: 100%;
+			height: 100%;
+			background-color: $arcticBlue;
+			@include transparency (0.9);
+			border: solid 2px $lightArcticBlue;
+		}
+	}
+
+
+	&.number {
+		font-family: 'Cinzel', serif;
+		font-weight: 300;
+	}
+
+	&.text {
+		font-size: 12px ;
+		font-family: $open_sansFont ;
+		text-transform: uppercase ;
+		font-weight: 500 ;
+		letter-spacing: 3 ;
+	}
+
+	&:hover {
+		background-color: $arcticBlue;
+		color: $millOrange;
+	}
+
+	&.three {
+		width: 112px;
+		height: 90px;
+		margin: 6px;	
+
+		&.number {
+			font-size: 60px;
+			line-height: 60px;
+		}
+	}
+	
+	&.two {
+		width: 168px;
+		height: 130px;
+		margin: 10px;
+
+		&.number {
+			font-size: 87px;
+			line-height: 87px;
+		}
+		
+	}
+
+	// Machine Buttons
+
+	&.group_root {
+
+		&.three {
+			height: 140px;
+		}
+
+		&.string {
+			.button {
+				// line-height: 12px;
+				margin-top: 25px;
+			}
+		}
+
+		.background_icon {
+			position: absolute;
+			display: block;
+			width: 100%;
+			height: 45px;
+			top: 28px;
+			@include transition;
+			font-family: $mill_router;
+			color: #c0c8ce;
+			font-size: 45px;
+			line-height: 50px;
+			text-align: center;
+
+
+			&.flame:before  {
+				content: "f";
+			}
+			&.misc:before  {
+				content: "m";
+			}
+			&.colour:before  {
+				content: "c";
+			}
+			&.nuke:before  {
+				content: "n";
+			}
+			&.smoke:before  {
+				content: "s";
+			}
+			&.vt:before  {
+				content: "v";
+			}
+			&.encoder:before {
+				content: "e";
+			}
+			&.edit:before {
+				content: "p";
+			}
+			&.flare:before {
+				content: "r";
+			}
+
+		}
+	}
+
+	&.string {
+		font-size: 12px;
+		font-family: $open_sansFont;
+		font-weight: 500;
+		letter-spacing: 3;
+
+		&.locked {
+			
+			&:before  {
+				font-size: 60px;
+				line-height: 120px;
+			}
+		}
+
+		.button {
+			text-transform: uppercase;
+		}
+
+		&:hover {
+
+			&.group_root {
+				.background_icon:before {
+					color: $millOrange;
+					@include transition;
+				}
+			}
+		}
+	}
+
+	// End machine buttons
+
+}

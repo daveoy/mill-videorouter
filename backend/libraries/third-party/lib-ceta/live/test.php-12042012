@@ -1,0 +1,241 @@
+<?php
+require_once 'Ceta.class.php';
+
+//$cmd = 'fetchLoopCalendar';
+$cmd = 'fetchProjectCalendar';
+
+// PROJECT //
+if ($cmd == 'fetchProjectIdByJnum') {
+    $cetaproject = new CetaProject();
+    $res = $cetaproject->fetchProjectIdByJnum('75910');
+    print_r($res);
+    exit;
+}
+
+if ($cmd == 'fetchProjectIdByCetaId') {
+    $cetaproject = new CetaProject();
+    $res = $cetaproject->fetchProjectIdByCetaId(1860000659);
+    echo $cetaproject->url;
+    print_r($res);
+    exit;
+}
+
+// CALENDAR //
+
+if ($cmd == 'fetchProjectCalendar') {
+
+    $cetacalendar = new CetaCalendar();
+    $res = $cetacalendar->fetchProjectCalendar(95600);
+
+    print_r($res);
+    exit;
+
+    $schedule = array();
+
+    foreach ($res['schedule'] as $event) {
+
+	if (!array_key_exists($event['category'], $schedule)) {
+	    $schedule[$event['category']] = array();
+	}
+
+	if (!array_key_exists($event['service'], $schedule[$event['category']])) {
+            $schedule[$event['category']][$event['service']] = array('Category' => $event['category'],
+	                                                             'Service' => $event['service'],
+						                     'Description' => $event['description'],
+						                     'Dates' => array());
+	}
+
+	$schedule[$event['category']][$event['service']]['Dates'][] = $event['date'];
+
+    }
+
+    $categories = array('ganttGreen', 'ganttOrange', 'ganttRed');
+    $x = 0;
+    $results = array();
+
+    foreach ($schedule as $category) {
+
+	$services = array();
+
+	if ($x >= count($categories)) {
+	    $x = 0;
+	}
+	$colour = $categories[$x];
+	$x++;
+
+        foreach ($category as $service) {
+
+
+	    foreach ($service['Dates'] as $date) {
+	        $services[] = array('from' => '/Date(' . strtotime($date) . '000)/',
+	                            'to'   => '/Date(' . strtotime($date) . '000)/',
+				    'customClass'   => $colour,
+	                            'desc'   => $service['Service']);
+	    }
+
+	    $results[] = array ('name' => $service['Category'],
+	    		        'desc' => $service['Description'],
+	                        'values' => $services);
+	}
+
+    }
+
+//    print_r($results);
+
+    header("Content-type: application/json");
+    echo json_encode($results);
+    exit;
+
+    print_r($schedule);
+//    print_r($res);
+
+
+    exit;
+}
+
+// LOOP //
+if ($cmd == 'fetchLoopCalendar') {
+
+    $cetaproject = new CetaProject();
+    $cetajob = new CetaJob();
+    $options = array('resource_schedule_service' => TRUE);
+    $res = $cetajob->fetchJobsByProjectId(1860000660, $options);
+    print_r($res);
+    exit;
+
+}
+
+// JOB //
+if ($cmd == 'fetchJobsByProjectId') {
+    $cetajob = new CetaJob();
+    $options = array('resource_schedule_service' => TRUE);
+    $res = $cetajob->fetchJobsByProjectId(1860000658, $options);
+}
+
+if ($cmd == 'fetchLatestJobByProject') {		// JS4D equivalent: getLatestWsByJobNo
+
+    $pnumber = 200116;
+
+    $cetaproject = new CetaProject();
+    $cetajob = new CetaJob();
+
+    $project = $cetaproject->fetchProjectIdByJnum($pnumber);
+
+    if (array_key_exists('warning', $project)) {
+        echo $project['warning']; exit;
+	// return $project['warning'];
+    }
+
+    $latestjobs = array("jobnumber" => $project[0]['projectnumber'],
+                        "jobtitle" => $project[0]['title'],
+		        "jobproduct" => $project[0]['productname'],
+		        "worksheets" => array());
+
+    $alljobs = $cetajob->fetchJobsByProjectId($project[0]['projectID'], array());
+
+    $now = date('Y-m-d');
+    $yesterday = date('Y-m-d', mktime()-86400);
+    // Select last 2 days, Confirmed & Completed only.
+
+    foreach ($alljobs as $job) {
+	if ((substr($job['StartTime'], 0, 10) >= $yesterday) && (substr($job['StartTime'], 0, 10) <= $now) && ($job['FdStatus'] == 'Confirmed' || $job['FdStatus'] == 'Completed')){
+	    $latestjobs['worksheets'][] = array('wsnumber' => $job['JobID'] . $job['Depot'],
+	                                        'wsdate' => substr($job['StartTime'], 0, 10),
+					        'quoteno' => 'unknown');
+	}
+    }
+
+    print_r($latestjobs);
+    exit;
+}
+
+if ($cmd == 'fetchTapesByJob') {			// JS4D equivalent: getWsInfo
+
+    $jobid = '231702';
+
+    $validtapetype = explode(' ', 'UML UMH D1S D1L BDS BDL BAS BAL DAT VHS CDR DVC D5L D5S HDS HDL H5S SRH DVD LAS LT0');
+
+    $cetajob = new CetaJob();
+    $job = $cetajob->fetchJobDetailsByJobId($jobid);
+
+    $cetamedia = new CetaMedia();
+    $tapes = $cetamedia->fetchMediaByJnum($job['projectnumber']);
+
+    $res = array('error' => 0,
+                 'worksheetnumber' => $jobid,
+		 'jobnumber' => 'J'.$job['projectnumber'],
+		 'jobtitle' => $job['title1'],
+		 'jobproduct' => $job['productname'],
+		 'tapes' => array(
+		                array('tapenumber' => 'Electronic Dub',
+		                      'tapedesc' => 'Electronic Dub'),
+		                array('tapenumber' => 'Electronic Dub (Midi Mill BBH)',
+		                      'tapedesc' => 'Electronic Dub (Midi Mill BBH)'
+			     )));
+
+    foreach ($tapes as $tape) {
+	if (in_array(substr($tape['TapeNumber'], 0, 3), $validtapetype)) {
+	    $res['tapes'][] = array('tapenumber' => $tape['TapeNumber'],
+	                            'tapedesc' => $tape['TapeName']);
+	}
+
+    }
+
+    print_r($res);
+    exit;
+
+}
+
+
+if ($cmd == 'addFilemailer') {
+    $cetajob = new CetaJob();
+    $res = $cetajob->addFilemailer('pec');
+    print_r($res);
+    exit;
+}
+
+
+if ($cmd == 'fetchJobDetailsByJobId') {
+    $cetajob = new CetaJob();
+    $res = $cetajob->fetchJobDetailsByJobId(368915);
+    print_r($res);
+    exit;
+}
+
+// USER //
+if ($cmd == 'fetchDetailsByUsername') {
+    $cetauser = new cetaUser();
+    $res = $cetauser->fetchDetailsByUsername('neilb');
+    print_r($res);
+    exit;
+}
+
+// SERVICE //
+if ($cmd == 'fetchServiceDetails') {
+    $cetaservice = new cetaService();
+    $res = $cetaservice->fetchServiceDetails('INF');
+    print_r($res);
+    exit;
+}
+
+// MEDIA //
+if ($cmd == 'fetchMediaByBarcode') {
+    $cetamedia = new CetaMedia();
+//    $res = $cetamedia->getTapesDetails('SRHDS0326670LD');
+    $res = $cetamedia->getTapesDetails('MMF0328226LD');
+    echo $cetamedia->url . '\n';
+}
+
+if ($cmd == 'fetchMediaByJnum') {
+    $cetamedia = new CetaMedia();
+    //$cetamedia->setLimit(5);
+    $cetamedia->setOrderBy('copytype');
+    //$cetamedia->setDirection('asc');
+    //$cetamedia->setOffset('5');
+
+    $res = $cetamedia->fetchMediaByJnum(57235, 1);
+    print_r($res);
+    exit;
+}
+
+?>

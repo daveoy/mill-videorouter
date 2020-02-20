@@ -1,0 +1,25 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+metadata:
+  name: videorouter
+build:
+  artifacts:
+  - image: docker.themill.com/frontend
+    docker:
+      dockerfile: frontend/Dockerfile
+  - image: docker.themill.com/cms
+    docker:
+      dockerfile: cms/Dockerfile
+  - image: docker.themill.com/backend
+    docker:
+      dockerfile: backend/Dockerfile
+deploy:
+  helm:
+    releases:
+    - name: videorouter
+      chartPath: /Users/davey/Documents/git/mill-kubernetes/videorouter
+      namespace: videorouter
+      values:
+       frontendimage: docker.themill.com/frontend
+       cmsimage: docker.themill.com/cms
+       backendimage: docker.themill.com/backend

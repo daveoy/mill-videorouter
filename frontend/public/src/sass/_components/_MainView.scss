@@ -1,0 +1,289 @@
+.main_view{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	overflow: auto;
+
+	.main_ctr{		
+		margin:0 auto;
+		width:960px;
+		
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);	
+		
+		@include transition(all);
+
+		.header {
+			position: relative;
+		 	float: left;
+    		width: 100%;	
+	 		
+			> .message_ctr {
+				float: right;
+				padding: 40px 20px 0;
+				font-size: 14px;
+				line-height: 42px;
+				font-weight: 300;
+				text-transform: uppercase;
+
+				._from_text, ._to_text {
+					font-weight: 600;
+					font-style: italic;
+				}
+
+	   			.no-touch &{
+	   				// height: 115px;
+	   			}
+
+	   			.touch &{
+	   				// height: 30px;
+	   			}
+			}
+		}
+
+		.selection_ctr{
+		 	position: relative;
+		 	float: left;
+    		width: 100%;
+    		overflow: auto;
+    		margin-bottom: 60px;
+		 	@include display_flex;
+		 	@include justify_content;
+		 	@include transition(opacity);
+		 
+    		
+    		.selection_from_ctr,
+    		.selection_to_ctr{
+    			min-height: 545px;
+ 				width: 46.354166%;
+ 				@include display_flex;
+    		}
+    		
+			.selection_from_ctr {
+				float: left;
+			}
+
+			.selection_to_ctr {
+				float: right;
+			}
+
+			.connection_indicator_ctr {
+
+				> div {
+					position: absolute;
+					left: 50%;
+					top: 50%;
+					z-index: 100;
+					text-align: center;
+					font-weight: 400;
+				}
+
+				.not_connected_btn {
+					color: $millOrange;
+					border-radius: 50%;
+					width: 120px;
+					height: 120px;					
+					margin-top: -36px;
+					margin-left: -60px;
+					background: $white;	
+					padding: 40px 0;
+					font-size: 16px;						
+					line-height: 40px;						
+					letter-spacing: 2;
+					display: none;
+					text-transform: uppercase;
+
+					&.active {
+						display: block;
+					}
+				}			
+
+				.connected_btn {
+					position: relative;
+					border-radius: 50%;				
+					width: 150px;
+					height: 150px;		
+					margin-top: -35px;
+					margin-left: -75px;
+					background: $millOrange;
+					padding: 20px 0;
+					font-size: 30px;
+					line-height: 40px;
+					display: none;
+					// cursor: pointer;
+					color: $white;
+					font-family: $mill_router; 
+
+					&:before {
+						// @include transition;
+						content: "l";
+						font-size: 120px;
+						position: absolute;
+						top: 32%;
+						left: 10%;
+						width: 70px;
+						height: 70px;
+						line-height: 60px;
+						text-align: center;
+					}
+
+					&.active {	
+						display: block;
+					}
+
+					// &:hover {
+					// 	@include transition(all, 0.1);
+					// 	-webkit-box-shadow: 0 0 40px 1px #000000;
+					// 	box-shadow: 0 0 40px 1px #000000;
+
+					// 	&:before {
+					// 		content: "d";
+					// 	}
+					// }
+				}			
+			}		
+		}
+	}
+
+	.connected_list_ctr{
+		position: fixed;
+		right:0;
+		height: 100%;
+		width: 450px;
+		-webkit-transform: translate3d(100%, 0, 0);
+		transform: translate3d(100%, 0, 0);
+		@include transition(transform);
+		@include transition(-webkit-transform);
+
+		.connected_btn {
+			display: block;
+			height: 45px;
+			width: 45px;
+			background-color: $mediumGrey;
+			font-family: 'mill_router', 'Open Sans', 'Lato', Helvetica, Arial, sans-serif;
+			color: $white;
+			font-size: 34px;
+			line-height: 45px;
+			font-weight: 100;
+			text-align: center;
+			cursor: default;
+			@include transition;
+			z-index: 30;
+			cursor: pointer;
+			position: absolute;
+			top: 45px;
+			left: -45px;
+
+
+			&:hover {
+				background-color: $millOrange;
+			}
+		}
+
+		.overlay{
+ 			position: absolute;
+			width: 500%;
+			height: 100%;
+			left:-500%;
+			display: none;
+			 
+		}
+
+		.list_ctr {
+			background-color: $bodyBlack;
+ 			color: #bbbbbb;
+			font-size: 14px;
+			position: absolute;
+			top: 0;
+			right: 0;
+			z-index: 100;
+			width: 450px;
+			padding: 40px; 
+			overflow-y: auto;
+			overflow-x: hidden;
+			height: 100%;
+
+			.floor_ctr {
+				float: left;
+				clear: both;
+				width: 100%;
+
+				h1 {
+					color: $lightGrey;
+					padding: 0;
+					margin: 0 0 35px;
+					font-size: 14px;
+					text-transform: uppercase;
+					font-weight: 300;
+					letter-spacing: 1;
+					line-height: 14px;
+					text-align: right;
+				}
+
+				h2 {
+					color: $millOrange;
+					border-bottom: solid 1px #c3713b;
+					padding: 0 0 6px;
+					margin: 6px 0 12px;
+					font-size: 14px;
+					font-weight: 400;
+					text-transform: uppercase;
+				}
+				
+				.connection_info {
+					padding: 2px 8px;
+					float: left;
+					clear: both;
+					width: 100%;
+
+					&:last-child {
+						padding-bottom: 16px;
+					}
+
+					.float_left {
+						float: left;
+
+						.link_icon {
+							font-family: 'mill_router', 'Open Sans', 'Lato', Helvetica, Arial, sans-serif;
+							color: #7e7e7e;
+						}	
+					}
+
+					.connection_time {
+						color: $mediumGrey;
+						float: right;
+						padding-left: 30px;
+					}
+				}
+			}	
+		}
+	}
+	
+
+ 
+
+
+	&.open {
+
+		.overlay{
+ 			display: block;
+		}
+		
+		
+
+		.main_ctr {
+			-webkit-transform: translate3d(-450px, 0, 0);
+			transform: translate3d(-450px, 0, 0);	
+		}
+
+		.connected_list_ctr {
+			-webkit-transform: translate3d(0, 0, 0);
+			transform: translate3d(0, 0, 0);
+		}
+
+		.selection_ctr {
+			 opacity: 0.4;
+		}
+
+	}
+}
