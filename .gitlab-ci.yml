@@ -1,8 +1,6 @@
 stages:
   - build
-  - deploy-frontend
-  - deploy-backend
-  - deploy-cms
+  - deploy
 
 build-frontend:
   stage: build
@@ -54,7 +52,7 @@ build-cms:
     - docker push docker.themill.com/videorouter:cms-ci-$CI_COMMIT_SHORT_SHA
 
 deploy-frontend:
-  stage: deploy-frontend
+  stage: deploy
   image: docker:19.03.1
   only:
     - production
@@ -74,7 +72,7 @@ deploy-frontend:
     - docker tag docker.themill.com/videorouter:frontend-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:frontend-$CI_COMMIT_SHORT_SHA
     - docker push docker.themill.com/videorouter:frontend-$CI_COMMIT_SHORT_SHA
 deploy-backend:
-  stage: deploy-backend
+  stage: deploy
   image: docker:19.03.1
   only:
     - production
@@ -94,7 +92,7 @@ deploy-backend:
     - docker tag docker.themill.com/videorouter:backend-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:backend-$CI_COMMIT_SHORT_SHA
     - docker push docker.themill.com/videorouter:backend-$CI_COMMIT_SHORT_SHA
 deploy-cms:
-  stage: deploy-cms
+  stage: deploy
   image: docker:19.03.1
   only:
     - production
