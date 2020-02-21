@@ -1,13 +1,11 @@
 stages:
-  - build-frontend
-  - build-backend
-  - build-cms
-  - deploy-prod-frontend
-  - deploy-prod-backend
-  - deploy-prod-cms
+  - build
+  - deploy-frontend
+  - deploy-backend
+  - deploy-cms
 
 build-frontend:
-  stage: build-frontend
+  stage: build
   image: docker:19.03.1
   variables:
     DOCKER_OPTS: "--insecure-registry=docker.themill.com"
@@ -23,7 +21,7 @@ build-frontend:
     - docker tag frontend-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:frontend-ci-$CI_COMMIT_SHORT_SHA
     - docker push docker.themill.com/videorouter:frontend-ci-$CI_COMMIT_SHORT_SHA
 build-backend:
-  stage: build-backend
+  stage: build
   image: docker:19.03.1
   variables:
     DOCKER_OPTS: "--insecure-registry=docker.themill.com"
@@ -39,7 +37,7 @@ build-backend:
     - docker tag backend-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:backend-ci-$CI_COMMIT_SHORT_SHA
     - docker push docker.themill.com/videorouter:backend-ci-$CI_COMMIT_SHORT_SHA
 build-cms:
-  stage: build-cms
+  stage: build
   image: docker:19.03.1
   variables:
     DOCKER_OPTS: "--insecure-registry=docker.themill.com"
@@ -55,7 +53,7 @@ build-cms:
     - docker tag cms-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:cms-ci-$CI_COMMIT_SHORT_SHA
     - docker push docker.themill.com/videorouter:cms-ci-$CI_COMMIT_SHORT_SHA
 
-deploy-prod-frontend:
+deploy-frontend:
   stage: deploy-prod-frontend
   image: docker:19.03.1
   only:
@@ -75,7 +73,7 @@ deploy-prod-frontend:
     - docker pull docker.themill.com/videorouter:frontend-ci-$CI_COMMIT_SHORT_SHA
     - docker tag docker.themill.com/videorouter:frontend-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:frontend-$CI_COMMIT_SHORT_SHA
     - docker push docker.themill.com/videorouter:frontend-$CI_COMMIT_SHORT_SHA
-deploy-prod-backend:
+deploy-backend:
   stage: deploy-prod-backend
   image: docker:19.03.1
   only:
@@ -95,7 +93,7 @@ deploy-prod-backend:
     - docker pull docker.themill.com/videorouter:backend-ci-$CI_COMMIT_SHORT_SHA
     - docker tag docker.themill.com/videorouter:backend-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:backend-$CI_COMMIT_SHORT_SHA
     - docker push docker.themill.com/videorouter:backend-$CI_COMMIT_SHORT_SHA
-deploy-prod-cms:
+deploy-cms:
   stage: deploy-prod-cms
   image: docker:19.03.1
   only:
