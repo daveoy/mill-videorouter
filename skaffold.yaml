@@ -23,3 +23,5 @@ deploy:
        frontendimage: docker.themill.com/frontend
        cmsimage: docker.themill.com/cms
        backendimage: docker.themill.com/backend
+      valuesFiles:
+      - /Users/davey/Documents/git/mill-kubernetes/videorouter/values.chi2.yaml
