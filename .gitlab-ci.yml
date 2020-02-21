@@ -1,0 +1,117 @@
+stages:
+  - build-frontend
+  - build-backend
+  - build-cms
+  - deploy-prod-frontend
+  - deploy-prod-backend
+  - deploy-prod-cms
+
+build-frontend:
+  stage: build-frontend
+  image: docker:19.03.1
+  variables:
+    DOCKER_OPTS: "--insecure-registry=docker.themill.com"
+    DOCKER_HOST: tcp://localhost:2375
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - name: docker:19.03.1-dind
+      command: ["--insecure-registry=docker.themill.com"]
+  before_script:
+    - docker login http://docker.themill.com -u docker -p docker
+  script:
+    - docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -t frontend-ci-$CI_COMMIT_SHORT_SHA frontend/
+    - docker tag frontend-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:frontend-ci-$CI_COMMIT_SHORT_SHA
+    - docker push docker.themill.com/videorouter:frontend-ci-$CI_COMMIT_SHORT_SHA
+build-backend:
+  stage: build-backend
+  image: docker:19.03.1
+  variables:
+    DOCKER_OPTS: "--insecure-registry=docker.themill.com"
+    DOCKER_HOST: tcp://localhost:2375
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - name: docker:19.03.1-dind
+      command: ["--insecure-registry=docker.themill.com"]
+  before_script:
+    - docker login http://docker.themill.com -u docker -p docker
+  script:
+    - docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -t backend-ci-$CI_COMMIT_SHORT_SHA backend/
+    - docker tag backend-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:backend-ci-$CI_COMMIT_SHORT_SHA
+    - docker push docker.themill.com/videorouter:backend-ci-$CI_COMMIT_SHORT_SHA
+build-cms:
+  stage: build-cms
+  image: docker:19.03.1
+  variables:
+    DOCKER_OPTS: "--insecure-registry=docker.themill.com"
+    DOCKER_HOST: tcp://localhost:2375
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - name: docker:19.03.1-dind
+      command: ["--insecure-registry=docker.themill.com"]
+  before_script:
+    - docker login http://docker.themill.com -u docker -p docker
+  script:
+    - docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -t cms-ci-$CI_COMMIT_SHORT_SHA cms/
+    - docker tag cms-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:cms-ci-$CI_COMMIT_SHORT_SHA
+    - docker push docker.themill.com/videorouter:cms-ci-$CI_COMMIT_SHORT_SHA
+
+deploy-prod-frontend:
+  stage: deploy-prod-frontend
+  image: docker:19.03.1
+  only:
+    - production
+  variables:
+    DOCKER_OPTS: "--insecure-registry=docker.themill.com"
+    DOCKER_HOST: tcp://localhost:2375
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - name: docker:19.03.1-dind
+      command: ["--insecure-registry=docker.themill.com"]
+  before_script:
+    - docker login http://docker.themill.com -u docker -p docker
+  dependencies:
+    - build-backend
+  script:
+    - docker pull docker.themill.com/videorouter:frontend-ci-$CI_COMMIT_SHORT_SHA
+    - docker tag docker.themill.com/videorouter:frontend-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:frontend-$CI_COMMIT_SHORT_SHA
+    - docker push docker.themill.com/videorouter:frontend-$CI_COMMIT_SHORT_SHA
+deploy-prod-backend:
+  stage: deploy-prod-backend
+  image: docker:19.03.1
+  only:
+    - production
+  variables:
+    DOCKER_OPTS: "--insecure-registry=docker.themill.com"
+    DOCKER_HOST: tcp://localhost:2375
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - name: docker:19.03.1-dind
+      command: ["--insecure-registry=docker.themill.com"]
+  before_script:
+    - docker login http://docker.themill.com -u docker -p docker
+  dependencies:
+    - build-backend
+  script:
+    - docker pull docker.themill.com/videorouter:backend-ci-$CI_COMMIT_SHORT_SHA
+    - docker tag docker.themill.com/videorouter:backend-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:backend-$CI_COMMIT_SHORT_SHA
+    - docker push docker.themill.com/videorouter:backend-$CI_COMMIT_SHORT_SHA
+deploy-prod-cms:
+  stage: deploy-prod-cms
+  image: docker:19.03.1
+  only:
+    - production
+  variables:
+    DOCKER_OPTS: "--insecure-registry=docker.themill.com"
+    DOCKER_HOST: tcp://localhost:2375
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - name: docker:19.03.1-dind
+      command: ["--insecure-registry=docker.themill.com"]
+  before_script:
+    - docker login http://docker.themill.com -u docker -p docker
+  dependencies:
+    - build-backend
+  script:
+    - docker pull docker.themill.com/videorouter:cms-ci-$CI_COMMIT_SHORT_SHA
+    - docker tag docker.themill.com/videorouter:cms-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:cms-$CI_COMMIT_SHORT_SHA
+    - docker push docker.themill.com/videorouter:cms-$CI_COMMIT_SHORT_SHA
