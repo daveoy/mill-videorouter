@@ -15,8 +15,8 @@ build-frontend:
   before_script:
     - docker login http://docker.themill.com -u docker -p docker
   script:
-    - docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -t frontend-ci-$CI_COMMIT_SHORT_SHA frontend/
-    - docker tag frontend-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:frontend-ci-$CI_COMMIT_SHORT_SHA
+    - docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -t ci-$CI_COMMIT_SHORT_SHA-frontend frontend/
+    - docker tag ci-$CI_COMMIT_SHORT_SHA-frontend docker.themill.com/videorouter:ci-$CI_COMMIT_SHORT_SHA-frontend
     - docker push docker.themill.com/videorouter:ci-$CI_COMMIT_SHORT_SHA-frontend
 build-backend:
   stage: build
@@ -31,8 +31,8 @@ build-backend:
   before_script:
     - docker login http://docker.themill.com -u docker -p docker
   script:
-    - docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -t backend-ci-$CI_COMMIT_SHORT_SHA backend/
-    - docker tag backend-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:backend-ci-$CI_COMMIT_SHORT_SHA
+    - docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -t ci-$CI_COMMIT_SHORT_SHA-backend backend/
+    - docker tag ci-$CI_COMMIT_SHORT_SHA-backend docker.themill.com/videorouter:ci-$CI_COMMIT_SHORT_SHA-backend
     - docker push docker.themill.com/videorouter:ci-$CI_COMMIT_SHORT_SHA-backend
 build-cms:
   stage: build
@@ -47,8 +47,8 @@ build-cms:
   before_script:
     - docker login http://docker.themill.com -u docker -p docker
   script:
-    - docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -t cms-ci-$CI_COMMIT_SHORT_SHA cms/
-    - docker tag cms-ci-$CI_COMMIT_SHORT_SHA docker.themill.com/videorouter:cms-ci-$CI_COMMIT_SHORT_SHA
+    - docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -t ci-$CI_COMMIT_SHORT_SHA-cms cms/
+    - docker tag ci-$CI_COMMIT_SHORT_SHA-cms docker.themill.com/videorouter:ci-$CI_COMMIT_SHORT_SHA-cms
     - docker push docker.themill.com/videorouter:ci-$CI_COMMIT_SHORT_SHA-cms
 
 deploy-frontend:
