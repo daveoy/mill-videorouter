@@ -1,7 +1,7 @@
 <?php
 
 $config = array();
-$config['http_base_url'] = getenv("API_HTTP_BASE_URL");
+$config['http_base_url'] = getenv("API_HTTPS_BASE_URL");
 $config['https_base_url'] = getenv("API_HTTPS_BASE_URL");
 $config['default_controller'] = 'main';
 $config['default_action'] = 'index';
