@@ -1,7 +1,7 @@
 <?php
 
 $config = array();
-$config['http_base_url'] = getenv("CMS_HTTP_BASE_URL");
+$config['http_base_url'] = getenv("CMS_HTTPS_BASE_URL");
 $config['https_base_url'] = getenv("CMS_HTTPS_BASE_URL");
 $config['default_controller'] = 'main';
 $config['default_action'] = 'index';
@@ -24,5 +24,5 @@ $config['database']['mysql']['videorouter']['password'] = getenv('DB_PASSWORD');
 $config['database']['mysql']['videorouter']['dbname'] = getenv('DB_NAME');
 
 # API
-$config['api']['endpoint_http_base'] = getenv('API_HTTP_BASE_URL');
+$config['api']['endpoint_http_base'] = getenv('API_HTTPS_BASE_URL');
 $config['api']['endpoint_https_base'] = getenv('API_HTTPS_BASE_URL');
