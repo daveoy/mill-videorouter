@@ -1,3 +1,3 @@
 env = {
-  API_URL: 'http://api.videorouter-chi.chi.themill.com/'
+  API_URL: 'https://api.videorouter-chi.chi.themill.com/'
 }
