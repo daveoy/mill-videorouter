@@ -64,5 +64,5 @@ echo $utu->getTemplates("T_SingleBtnView", "src/tpl/SingleBtnView.html");
 <script src="src/js/app/View/SingleItemView.js"></script>
 <script src="src/js/app/View/BreadcrumbsView.js"></script>
 <script src="src/js/app/app.js"></script>
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Cinzel:400,700,900">
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cinzel:400,700,900">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800">
