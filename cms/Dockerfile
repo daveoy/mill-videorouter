@@ -9,5 +9,6 @@ RUN apt-get update && apt-get install -y \
  memcached \
  telnet
 RUN a2enmod rewrite vhost_alias headers && docker-php-ext-install pdo_mysql
+COPY . /var/www/html/backend
 COPY . /var/www/html/cms
 ENTRYPOINT exec /var/www/html/cms/docker-entrypoint.sh
