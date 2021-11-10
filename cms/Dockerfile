@@ -1,4 +1,4 @@
-FROM php:apache
+FROM php:7.4.5-apache
 ARG BUILD_DATE
 LABEL org.label-schema.build-date=$BUILD_DATE
 LABEL org.opencontainers.image.created=$BUILD_DATE
