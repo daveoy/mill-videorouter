@@ -43,7 +43,7 @@ $floors = $statement->fetchAll(PDO::FETCH_OBJ);
 # get router labels and bundle with input and output
 # input
 $routerInputs = array();
-$ch = curl_init($config['api']['endpoint_http_base'] . "/cms/?input");
+$ch = curl_init($config['api']['endpoint_http_base'] . "cms/?input");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -66,7 +66,7 @@ foreach($inputs as $input)
 
 # output
 $routerOutputs = array();
-$ch = curl_init($config['api']['endpoint_http_base'] . "/cms/?output");
+$ch = curl_init($config['api']['endpoint_http_base'] . "cms/?output");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
